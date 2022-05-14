@@ -29,10 +29,14 @@ class ViewController: UIViewController {
     
     // MARK: private
         
-    private lazy var circle: UILabel = {
-        let view = UILabel()
+    private lazy var circle: PaddingLabel = {
+        let view = PaddingLabel()
+        view.padding = UIEdgeInsets(top: 60, left: 60, bottom: 60, right: 60)
+        view.frame.size.width = 200
+        view.frame.size.height = 200
         view.backgroundColor = .red
-//        view.layer.cornerRadius = view.bounds.width / 2
+        view.clipsToBounds = true
+        view.layer.cornerRadius = 100
         view.textColor = .white
         view.text = "Fortune"
         return view
