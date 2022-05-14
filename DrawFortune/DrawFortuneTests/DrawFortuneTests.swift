@@ -16,5 +16,4 @@ class DrawFortuneTests: XCTestCase {
         self.measure {
         }
     }
-
 }
