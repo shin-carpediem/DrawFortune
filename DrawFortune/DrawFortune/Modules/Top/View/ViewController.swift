@@ -15,6 +15,7 @@ class ViewController: UIViewController {
         buttonForAbove.translatesAutoresizingMaskIntoConstraints = false
         circle.translatesAutoresizingMaskIntoConstraints = false
         button.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .white
         view.addSubview(text)
         view.addSubview(buttonForAbove)
         view.addSubview(circle)
