@@ -34,6 +34,7 @@ class ViewController: UIViewController {
             button.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100)
         ])
         
+        buttonForAbove.addTarget(self, action: #selector(openNextPage(_ :)), for: .touchUpInside)
         button.addTarget(self, action: #selector(getFortune(_ :)), for: .touchUpInside)
     }
     
@@ -75,6 +76,10 @@ class ViewController: UIViewController {
         view.setTitle("Draw a Fortune", for: .normal)
         return view
     }()
+    
+    @objc private func openNextPage(_ sender: UIButton) {
+        present(NameJudgeViewController(), animated: true, completion: nil)
+    }
     
     @objc private func getFortune(_ sender: UIButton) {
         let fortune = ["大吉", "吉", "中吉", "凶"]

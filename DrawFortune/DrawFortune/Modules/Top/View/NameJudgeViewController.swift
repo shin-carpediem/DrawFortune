@@ -12,31 +12,39 @@ class NameJudgeViewController: UIViewController {
     private func setupLayout() {
         view.translatesAutoresizingMaskIntoConstraints = false
         text.translatesAutoresizingMaskIntoConstraints = false
-        buttonForAbove.translatesAutoresizingMaskIntoConstraints = false
+        closeButton.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .white
         view.addSubview(text)
-        view.addSubview(buttonForAbove)
+        view.addSubview(closeButton)
         NSLayoutConstraint.activate([
             text.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            text.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
-            buttonForAbove.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            buttonForAbove.topAnchor.constraint(equalTo: text.bottomAnchor, constant: 10),
-            buttonForAbove.bottomAnchor.constraint(equalTo: view.topAnchor, constant: -100),
+            text.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            closeButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            closeButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10)
         ])
+        
+        closeButton.addTarget(self, action: #selector(closeModal(_ :)), for: .touchUpInside)
     }
     
     // MARK: private
     
-    private lazy var text: UITextField = {
-        let view = UITextField()
-        view.borderStyle = .roundedRect
-        view.placeholder = "Please enter your name"
+    private lazy var text: UILabel = {
+        let view = UILabel()
+        view.frame.size.width = 200
+        view.frame.size.height = 100
+        view.textColor = .blue
+        view.text = "This is next page"
         return view
     }()
     
-    private lazy var buttonForAbove: UIButton = {
+    private lazy var closeButton: UIButton = {
         let view = UIButton()
         view.setTitleColor(.blue, for: .normal)
-        view.setTitle("Send", for: .normal)
+        view.setTitle("X", for: .normal)
         return view
     }()
+    
+    @objc private func closeModal(_ sender: UIButton ) {
+        self.dismiss(animated: true, completion: nil)
+    }
 }
