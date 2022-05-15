@@ -11,11 +11,20 @@ class ViewController: UIViewController {
     
     private func setupLayout() {
         view.translatesAutoresizingMaskIntoConstraints = false
+        text.translatesAutoresizingMaskIntoConstraints = false
+        buttonForAbove.translatesAutoresizingMaskIntoConstraints = false
         circle.translatesAutoresizingMaskIntoConstraints = false
         button.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(text)
+        view.addSubview(buttonForAbove)
         view.addSubview(circle)
         view.addSubview(button)
         NSLayoutConstraint.activate([
+            text.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            text.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
+            buttonForAbove.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            buttonForAbove.topAnchor.constraint(equalTo: text.bottomAnchor, constant: 10),
+            buttonForAbove.bottomAnchor.constraint(equalTo: circle.topAnchor, constant: -100),
             circle.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             circle.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             button.topAnchor.constraint(equalTo: circle.bottomAnchor, constant: 100),
@@ -28,6 +37,20 @@ class ViewController: UIViewController {
     }
     
     // MARK: private
+    
+    private lazy var text: UITextField = {
+        let view = UITextField()
+        view.borderStyle = .roundedRect
+        view.placeholder = "Please enter your name"
+        return view
+    }()
+    
+    private lazy var buttonForAbove: UIButton = {
+        let view = UIButton()
+        view.setTitleColor(.blue, for: .normal)
+        view.setTitle("Send", for: .normal)
+        return view
+    }()
         
     private lazy var circle: PaddingLabel = {
         let view = PaddingLabel()
