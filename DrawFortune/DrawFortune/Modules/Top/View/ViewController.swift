@@ -78,12 +78,19 @@ class ViewController: UIViewController {
     }()
         
     @objc private func openNextPage(_ sender: UIButton) {
-        present(NameJudgeViewController(text.text ?? ""), animated: true, completion: nil)
+        guard let inputText = text.text else { return }
+        if (inputText == "") {
+            let alertController = UIAlertController(title: "名前入力欄が空です", message: "名前を1文字以上入力してください", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            present(alertController, animated: true)
+        } else {
+            present(NameJudgeViewController(inputText), animated: true, completion: nil)
+        }
     }
 
     @objc private func getFortune(_ sender: UIButton) {
         let fortune = ["大吉", "吉", "中吉", "凶"]
-        let random = arc4random_uniform(UInt32(fortune.count))
+        let random = Int.random(in: 1...fortune.count)
         self.circle.text = fortune[Int(random)]
     }
 }

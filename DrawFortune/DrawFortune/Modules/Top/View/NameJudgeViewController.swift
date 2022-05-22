@@ -58,7 +58,7 @@ class NameJudgeViewController: UIViewController {
         view.frame.size.width = 200
         view.frame.size.height = 100
         view.textColor = .blue
-        view.text = "100"
+        view.text = String(Int.random(in: 1...100))
         return view
     }()
     
