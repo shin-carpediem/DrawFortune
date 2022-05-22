@@ -9,6 +9,9 @@ class ViewController: UIViewController {
         setupLayout()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+    }
+        
     private func setupLayout() {
         view.translatesAutoresizingMaskIntoConstraints = false
         text.translatesAutoresizingMaskIntoConstraints = false

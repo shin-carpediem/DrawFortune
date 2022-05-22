@@ -20,6 +20,9 @@ class NameJudgeViewController: UIViewController {
         setupLayout()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+    }
+    
     private func setupLayout() {
         view.translatesAutoresizingMaskIntoConstraints = false
         text.translatesAutoresizingMaskIntoConstraints = false
@@ -69,7 +72,7 @@ class NameJudgeViewController: UIViewController {
         return view
     }()
     
-    @objc private func closeModal(_ sender: UIButton ) {
+    @objc private func closeModal(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
     }
 }
