@@ -87,7 +87,11 @@ class ViewController: UIViewController {
             alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             present(alertController, animated: true)
         } else {
-            present(NameJudgeViewController(inputText), animated: true, completion: nil)
+            let nameJudgeViewController = NameJudgeViewController(inputText)
+            // iOS 13以降、Modalの場合、遷移先のViewDidAppearが呼ばれないので、遷移元・先でdelegateを指定する
+            // https://zenn.dev/tanukidevelop/articles/4d72e467c77241
+            nameJudgeViewController.presentationController?.delegate = self
+            present(nameJudgeViewController, animated: true, completion: nil)
         }
     }
 
@@ -95,5 +99,12 @@ class ViewController: UIViewController {
         let fortune = ["大吉", "吉", "中吉", "凶"]
         let random = Int.random(in: 1...fortune.count)
         self.circle.text = fortune[Int(random)]
+    }
+}
+
+// Modalを閉じる時のイベントを取得する
+extension ViewController: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        text.text = ""
     }
 }

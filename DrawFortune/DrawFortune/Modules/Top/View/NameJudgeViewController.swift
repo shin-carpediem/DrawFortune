@@ -74,5 +74,7 @@ class NameJudgeViewController: UIViewController {
     
     @objc private func closeModal(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
+        guard let presentationController = presentationController else { return }
+        presentationController.delegate?.presentationControllerDidDismiss?(presentationController)
     }
 }
