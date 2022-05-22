@@ -1,7 +1,18 @@
 import UIKit
 
 class NameJudgeViewController: UIViewController {
-            
+    
+    let userName: String
+    
+    init(_ userName: String) {
+        self.userName = userName
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     // MARK: override
 
     override func viewDidLoad() {
@@ -12,13 +23,18 @@ class NameJudgeViewController: UIViewController {
     private func setupLayout() {
         view.translatesAutoresizingMaskIntoConstraints = false
         text.translatesAutoresizingMaskIntoConstraints = false
+        score.translatesAutoresizingMaskIntoConstraints = false
         closeButton.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .white
         view.addSubview(text)
+        view.addSubview(score)
         view.addSubview(closeButton)
         NSLayoutConstraint.activate([
+            text.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
+            text.bottomAnchor.constraint(equalTo: score.topAnchor, constant: -10),
             text.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            text.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            score.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            score.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             closeButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
             closeButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10)
         ])
@@ -32,8 +48,17 @@ class NameJudgeViewController: UIViewController {
         let view = UILabel()
         view.frame.size.width = 200
         view.frame.size.height = 100
+        view.textColor = .black
+        view.text = "\(userName)'s score is..."
+        return view
+    }()
+    
+    private lazy var score: UILabel = {
+        let view = UILabel()
+        view.frame.size.width = 200
+        view.frame.size.height = 100
         view.textColor = .blue
-        view.text = "This is next page"
+        view.text = "100"
         return view
     }()
     

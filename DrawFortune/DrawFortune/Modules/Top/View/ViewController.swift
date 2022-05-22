@@ -76,11 +76,11 @@ class ViewController: UIViewController {
         view.setTitle("Draw a Fortune", for: .normal)
         return view
     }()
-    
+        
     @objc private func openNextPage(_ sender: UIButton) {
-        present(NameJudgeViewController(), animated: true, completion: nil)
+        present(NameJudgeViewController(text.text ?? ""), animated: true, completion: nil)
     }
-    
+
     @objc private func getFortune(_ sender: UIButton) {
         let fortune = ["大吉", "吉", "中吉", "凶"]
         let random = arc4random_uniform(UInt32(fortune.count))
