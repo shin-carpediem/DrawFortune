@@ -1,8 +1,13 @@
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITextFieldDelegate {
             
     // MARK: override
+    
+    // タッチでキーボードを閉じる
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -11,6 +16,8 @@ class ViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
     }
+    
+    // MARK: private
         
     private func setupLayout() {
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -40,12 +47,12 @@ class ViewController: UIViewController {
         buttonForAbove.addTarget(self, action: #selector(openNextPage(_ :)), for: .touchUpInside)
         button.addTarget(self, action: #selector(getFortune(_ :)), for: .touchUpInside)
     }
-    
-    // MARK: private
-    
+
     private lazy var text: UITextField = {
         let view = UITextField()
         view.borderStyle = .roundedRect
+        // 自動的にキーボードを表示する
+        view.becomeFirstResponder()
         view.placeholder = "Please enter your name"
         return view
     }()
@@ -79,6 +86,26 @@ class ViewController: UIViewController {
         view.setTitle("Draw a Fortune", for: .normal)
         return view
     }()
+    
+    private func notifyKeyboardAction() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWIllShow(sender: )),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWIllHide(sender: )),
+            name: UIResponder.keyboardDidHideNotification,
+            object: nil
+        )
+    }
+    
+    func textFieldShouldReturn(_ text: UITextField) -> Bool {
+        text.resignFirstResponder()
+        return true
+    }
         
     @objc private func openNextPage(_ sender: UIButton) {
         guard let inputText = text.text else { return }
@@ -99,6 +126,27 @@ class ViewController: UIViewController {
         let fortune = ["大吉", "吉", "中吉", "凶"]
         let random = Int.random(in: 1...fortune.count)
         self.circle.text = fortune[Int(random)]
+    }
+        
+    // キーボードが表示された時
+    @objc private func keyboardWIllShow(sender: NSNotification) {
+        if text.isFirstResponder {
+            guard let userInfo = sender.userInfo else { return }
+            let duration: Float = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as! NSNumber).floatValue
+            UIView.animate(withDuration: TimeInterval(duration), animations: { () -> Void in
+                let transform = CGAffineTransform(translationX: 0, y: -150)
+                self.view.transform = transform
+            })
+        }
+    }
+    
+    // キーボードが閉じられた時
+    @objc private func keyboardWIllHide(sender: NSNotification) {
+        guard let userInfo = sender.userInfo else { return }
+        let duration: Float = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as! NSNumber).floatValue
+        UIView.animate(withDuration: TimeInterval(duration), animations: { () -> Void in
+            self.view.transform = CGAffineTransform.identity
+        })
     }
 }
 
