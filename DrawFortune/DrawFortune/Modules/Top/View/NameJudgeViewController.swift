@@ -1,6 +1,6 @@
 import UIKit
 
-class NameJudgeViewController: UIViewController {
+final class NameJudgeViewController: UIViewController {
     
     let userName: String
     

@@ -1,7 +1,12 @@
 import UIKit
 
-class ViewController: UIViewController, UITextFieldDelegate {
+final class ViewController: UIViewController, UITextFieldDelegate {
             
+    func textFieldShouldReturn(_ text: UITextField) -> Bool {
+        text.resignFirstResponder()
+        return true
+    }
+    
     // MARK: override
     
     // タッチでキーボードを閉じる
@@ -21,18 +26,22 @@ class ViewController: UIViewController, UITextFieldDelegate {
         
     private func setupLayout() {
         view.translatesAutoresizingMaskIntoConstraints = false
+        buttonToTimerView.translatesAutoresizingMaskIntoConstraints = false
         text.translatesAutoresizingMaskIntoConstraints = false
         buttonForAbove.translatesAutoresizingMaskIntoConstraints = false
         circle.translatesAutoresizingMaskIntoConstraints = false
         button.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .white
+        view.addSubview(buttonToTimerView)
         view.addSubview(text)
         view.addSubview(buttonForAbove)
         view.addSubview(circle)
         view.addSubview(button)
         NSLayoutConstraint.activate([
+            buttonToTimerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            buttonToTimerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
             text.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            text.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
+            text.topAnchor.constraint(equalTo: buttonToTimerView.bottomAnchor, constant: 50),
             buttonForAbove.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             buttonForAbove.topAnchor.constraint(equalTo: text.bottomAnchor, constant: 10),
             buttonForAbove.bottomAnchor.constraint(equalTo: circle.topAnchor, constant: -100),
@@ -41,12 +50,20 @@ class ViewController: UIViewController, UITextFieldDelegate {
             button.topAnchor.constraint(equalTo: circle.bottomAnchor, constant: 100),
             button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
             button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50),
-            button.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100)
+            button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -100)
         ])
         
+        buttonToTimerView.addTarget(self, action: #selector(goTimerPage(_ :)), for: .touchUpInside)
         buttonForAbove.addTarget(self, action: #selector(openNextPage(_ :)), for: .touchUpInside)
         button.addTarget(self, action: #selector(getFortune(_ :)), for: .touchUpInside)
     }
+    
+    private lazy var buttonToTimerView: UIButton = {
+        let view = UIButton()
+        view.setTitleColor(.green, for: .normal)
+        view.setTitle("Go to Timer", for: .normal)
+        return view
+    }()
 
     private lazy var text: UITextField = {
         let view = UITextField()
@@ -102,11 +119,14 @@ class ViewController: UIViewController, UITextFieldDelegate {
         )
     }
     
-    func textFieldShouldReturn(_ text: UITextField) -> Bool {
-        text.resignFirstResponder()
-        return true
+    // TODO: ボタンを押すと画面が固まる(かつ次のページに遷移しない)
+    @objc private func goTimerPage(_ sender: UIButton) {
+        let timerViewController = TimerViewController()
+        addChild(timerViewController)
+        view.addSubview(timerViewController.view)
+        timerViewController.didMove(toParent: self)
     }
-        
+
     @objc private func openNextPage(_ sender: UIButton) {
         guard let inputText = text.text else { return }
         if (inputText == "") {
@@ -149,6 +169,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
         })
     }
 }
+
+// MARK: extension
 
 // Modalを閉じる時のイベントを取得する
 extension ViewController: UIAdaptivePresentationControllerDelegate {
