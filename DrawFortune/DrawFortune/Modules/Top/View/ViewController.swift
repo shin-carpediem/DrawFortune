@@ -47,6 +47,8 @@ final class ViewController: UIViewController, UITextFieldDelegate {
             buttonForAbove.bottomAnchor.constraint(equalTo: circle.topAnchor, constant: -100),
             circle.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             circle.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            circle.widthAnchor.constraint(equalToConstant: 200),
+            circle.heightAnchor.constraint(equalToConstant: 200),
             button.topAnchor.constraint(equalTo: circle.bottomAnchor, constant: 100),
             button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
             button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50),
@@ -89,6 +91,7 @@ final class ViewController: UIViewController, UITextFieldDelegate {
         view.backgroundColor = .red
         view.clipsToBounds = true
         view.layer.cornerRadius = 100
+        view.textAlignment = .center
         view.textColor = .white
         view.text = "Fortune"
         return view
