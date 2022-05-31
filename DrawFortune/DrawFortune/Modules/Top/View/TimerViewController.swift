@@ -13,19 +13,6 @@ final class TimerViewController: UIViewController {
     }
     
     // MARK: private
-        
-    private func setupLayout() {
-        timerNumber.translatesAutoresizingMaskIntoConstraints = false
-        HstackView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(timerNumber)
-        view.addSubview(HstackView)
-        NSLayoutConstraint.activate([
-            timerNumber.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            timerNumber.bottomAnchor.constraint(equalTo: HstackView.topAnchor, constant: -10),
-            HstackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            HstackView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-        ])
-    }
     
     private lazy var timerNumber: UILabel = {
         let view = UILabel()
@@ -36,4 +23,20 @@ final class TimerViewController: UIViewController {
         let view = UIStackView()
         return view
     }()
+        
+    private func setupLayout() {
+        timerNumber.translatesAutoresizingMaskIntoConstraints = false
+        HstackView.translatesAutoresizingMaskIntoConstraints = false
+
+        view.addSubview(timerNumber)
+        view.addSubview(HstackView)
+
+        NSLayoutConstraint.activate([
+            timerNumber.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            timerNumber.bottomAnchor.constraint(equalTo: HstackView.topAnchor, constant: -10),
+
+            HstackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            HstackView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+    }
 }

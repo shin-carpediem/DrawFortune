@@ -2,7 +2,7 @@ import UIKit
 
 final class NameJudgeViewController: UIViewController {
     
-    let userName: String
+    var userName: String
     
     init(_ userName: String) {
         self.userName = userName
@@ -22,29 +22,7 @@ final class NameJudgeViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
     }
-    
-    private func setupLayout() {
-        view.translatesAutoresizingMaskIntoConstraints = false
-        text.translatesAutoresizingMaskIntoConstraints = false
-        score.translatesAutoresizingMaskIntoConstraints = false
-        closeButton.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .white
-        view.addSubview(text)
-        view.addSubview(score)
-        view.addSubview(closeButton)
-        NSLayoutConstraint.activate([
-            text.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
-            text.bottomAnchor.constraint(equalTo: score.topAnchor, constant: -10),
-            text.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            score.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            score.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            closeButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-            closeButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10)
-        ])
         
-        closeButton.addTarget(self, action: #selector(closeModal(_ :)), for: .touchUpInside)
-    }
-    
     // MARK: private
     
     private lazy var text: UILabel = {
@@ -56,7 +34,7 @@ final class NameJudgeViewController: UIViewController {
         return view
     }()
     
-    private lazy var score: UILabel = {
+    private let score: UILabel = {
         let view = UILabel()
         view.frame.size.width = 200
         view.frame.size.height = 100
@@ -69,8 +47,33 @@ final class NameJudgeViewController: UIViewController {
         let view = UIButton()
         view.setTitleColor(.blue, for: .normal)
         view.setTitle("X", for: .normal)
+        closeButton.addTarget(self, action: #selector(closeModal(_ :)), for: .touchUpInside)
         return view
     }()
+    
+    private func setupLayout() {
+        view.translatesAutoresizingMaskIntoConstraints = false
+        text.translatesAutoresizingMaskIntoConstraints = false
+        score.translatesAutoresizingMaskIntoConstraints = false
+        closeButton.translatesAutoresizingMaskIntoConstraints = false
+
+        view.backgroundColor = .white
+        view.addSubview(text)
+        view.addSubview(score)
+        view.addSubview(closeButton)
+
+        NSLayoutConstraint.activate([
+            text.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
+            text.bottomAnchor.constraint(equalTo: score.topAnchor, constant: -10),
+            text.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+
+            score.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            score.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+
+            closeButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            closeButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10)
+        ])
+    }
     
     @objc private func closeModal(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)

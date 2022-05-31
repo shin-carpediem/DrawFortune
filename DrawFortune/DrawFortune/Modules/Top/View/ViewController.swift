@@ -22,7 +22,26 @@ final class ViewController: UIViewController, UITextFieldDelegate {
     override func viewWillAppear(_ animated: Bool) {
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+    }
+    
     // MARK: private
+    
+    private let rootVStack: UIStackView = {
+        let view = UIStackView()
+        view.axis = .vertical
+        view.alignment = .center
+        view.distribution = .equalSpacing
+        return view
+    }()
+    
+    private let baseHStack: UIStackView = {
+        let view = UIStackView()
+        view.axis = .horizontal
+        view.alignment = .center
+        view.distribution = .equalSpacing
+        return view
+    }()
             
     private lazy var buttonToTimerView: UIButton = {
         let view = UIButton()
@@ -31,10 +50,20 @@ final class ViewController: UIViewController, UITextFieldDelegate {
         view.addTarget(self, action: #selector(goTimerPage(_ :)), for: .touchUpInside)
         return view
     }()
+    
+    private lazy var rightButtonToTimerView: UIButton = {
+        let view = UIButton()
+        view.setTitleColor(.green, for: .normal)
+        view.setTitle("Hi, Go to Timer!!", for: .normal)
+        view.addTarget(self, action: #selector(hiGoTimerPage(_ :)), for: .touchUpInside)
+        return view
+    }()
 
     private lazy var text: UITextField = {
         let view = UITextField()
         view.borderStyle = .roundedRect
+        view.layer.borderColor = .init(genericCMYKCyan: 0.3, magenta: 0.3, yellow: 0.3, black: 0.3, alpha: 0.3)
+        view.layer.borderWidth = 2
         // 自動的にキーボードを表示する
         view.becomeFirstResponder()
         view.placeholder = "Please enter your name"
@@ -49,7 +78,7 @@ final class ViewController: UIViewController, UITextFieldDelegate {
         return view
     }()
         
-    private lazy var circle: PaddingLabel = {
+    private let circle: PaddingLabel = {
         let view = PaddingLabel()
         view.padding = UIEdgeInsets(top: 60, left: 60, bottom: 60, right: 60)
         view.frame.size.width = 200
@@ -73,6 +102,47 @@ final class ViewController: UIViewController, UITextFieldDelegate {
         view.addTarget(self, action: #selector(getFortune(_ :)), for: .touchUpInside)
         return view
     }()
+        
+    private func setupLayout() {
+        view.translatesAutoresizingMaskIntoConstraints = false
+        rootVStack.translatesAutoresizingMaskIntoConstraints = false
+        baseHStack.translatesAutoresizingMaskIntoConstraints = false
+        buttonToTimerView.translatesAutoresizingMaskIntoConstraints = false
+        rightButtonToTimerView.translatesAutoresizingMaskIntoConstraints = false
+        text.translatesAutoresizingMaskIntoConstraints = false
+        buttonForAbove.translatesAutoresizingMaskIntoConstraints = false
+        circle.translatesAutoresizingMaskIntoConstraints = false
+        button.translatesAutoresizingMaskIntoConstraints = false
+
+        view.backgroundColor = .white
+        view.addSubview(rootVStack)
+
+        rootVStack.addArrangedSubview(baseHStack)
+        rootVStack.addArrangedSubview(text)
+        rootVStack.addArrangedSubview(buttonForAbove)
+        rootVStack.addArrangedSubview(circle)
+        rootVStack.addArrangedSubview(button)
+
+        baseHStack.addArrangedSubview(buttonToTimerView)
+        baseHStack.addArrangedSubview(rightButtonToTimerView)
+        
+        NSLayoutConstraint.activate([
+            rootVStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            rootVStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 5),
+            rootVStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 5),
+            rootVStack.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+
+            baseHStack.bottomAnchor.constraint(equalTo: text.topAnchor, constant: -100),
+
+            circle.widthAnchor.constraint(equalToConstant: 200),
+            circle.heightAnchor.constraint(equalToConstant: 200),
+
+            button.widthAnchor.constraint(equalToConstant: 150),
+            button.heightAnchor.constraint(equalToConstant: 50),
+            button.topAnchor.constraint(equalTo: circle.bottomAnchor, constant: 100),
+            button.bottomAnchor.constraint(equalTo: rootVStack.safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
     
     private func notifyKeyboardAction() {
         NotificationCenter.default.addObserver(
@@ -89,46 +159,26 @@ final class ViewController: UIViewController, UITextFieldDelegate {
         )
     }
     
-    private func setupLayout() {
-        view.translatesAutoresizingMaskIntoConstraints = false
-        buttonToTimerView.translatesAutoresizingMaskIntoConstraints = false
-        text.translatesAutoresizingMaskIntoConstraints = false
-        buttonForAbove.translatesAutoresizingMaskIntoConstraints = false
-        circle.translatesAutoresizingMaskIntoConstraints = false
-        button.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .white
-        view.addSubview(buttonToTimerView)
-        view.addSubview(text)
-        view.addSubview(buttonForAbove)
-        view.addSubview(circle)
-        view.addSubview(button)
-        NSLayoutConstraint.activate([
-            buttonToTimerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            buttonToTimerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
-            text.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            text.topAnchor.constraint(equalTo: buttonToTimerView.bottomAnchor, constant: 50),
-            buttonForAbove.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            buttonForAbove.topAnchor.constraint(equalTo: text.bottomAnchor, constant: 10),
-            buttonForAbove.bottomAnchor.constraint(equalTo: circle.topAnchor, constant: -100),
-            circle.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            circle.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            circle.widthAnchor.constraint(equalToConstant: 200),
-            circle.heightAnchor.constraint(equalToConstant: 200),
-            button.topAnchor.constraint(equalTo: circle.bottomAnchor, constant: 100),
-            button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
-            button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50),
-            button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -100)
-        ])
-    }
-    
     // TODO: ボタンを押すと画面が固まる(かつ次のページに遷移しない)
+    // UIViewController → UIViewController (Embed)
     @objc private func goTimerPage(_ sender: UIButton) {
         let timerViewController = TimerViewController()
         addChild(timerViewController)
         view.addSubview(timerViewController.view)
         timerViewController.didMove(toParent: self)
     }
+    
+    // TODO: もう一段階下のViewControllerに実装すべき内容
+    // UINavigationController → UIViewController (Root) → UIViewController (Show Detail)
+    @objc private func hiGoTimerPage(_ sender: UIButton) {
+        let viewController = UIViewController()
+        let navigationController = UINavigationController(rootViewController: viewController)
 
+        let timerViewController = TimerViewController()
+        viewController.navigationController?.pushViewController(timerViewController, animated: true)
+    }
+
+    // UIViewController → UIViewController (Present Modally)
     @objc private func openNextPage(_ sender: UIButton) {
         guard let inputText = text.text else { return }
         if (inputText == "") {
