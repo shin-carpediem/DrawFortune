@@ -23,7 +23,72 @@ final class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     // MARK: private
+            
+    private lazy var buttonToTimerView: UIButton = {
+        let view = UIButton()
+        view.setTitleColor(.green, for: .normal)
+        view.setTitle("Go to Timer", for: .normal)
+        view.addTarget(self, action: #selector(goTimerPage(_ :)), for: .touchUpInside)
+        return view
+    }()
+
+    private lazy var text: UITextField = {
+        let view = UITextField()
+        view.borderStyle = .roundedRect
+        // 自動的にキーボードを表示する
+        view.becomeFirstResponder()
+        view.placeholder = "Please enter your name"
+        return view
+    }()
+    
+    private lazy var buttonForAbove: UIButton = {
+        let view = UIButton()
+        view.setTitleColor(.blue, for: .normal)
+        view.setTitle("Send", for: .normal)
+        view.addTarget(self, action: #selector(openNextPage(_ :)), for: .touchUpInside)
+        return view
+    }()
         
+    private lazy var circle: PaddingLabel = {
+        let view = PaddingLabel()
+        view.padding = UIEdgeInsets(top: 60, left: 60, bottom: 60, right: 60)
+        view.frame.size.width = 200
+        view.frame.size.height = 200
+        view.backgroundColor = .red
+        view.clipsToBounds = true
+        view.layer.cornerRadius = 100
+        view.textAlignment = .center
+        view.textColor = .white
+        view.text = "Fortune"
+        return view
+    }()
+
+    private lazy var button: UIButton = {
+        let view = UIButton()
+        view.backgroundColor = .darkGray
+        view.layer.masksToBounds = true
+        view.layer.cornerRadius = 20
+        view.setTitleColor(.white, for: .normal)
+        view.setTitle("Draw a Fortune", for: .normal)
+        view.addTarget(self, action: #selector(getFortune(_ :)), for: .touchUpInside)
+        return view
+    }()
+    
+    private func notifyKeyboardAction() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWIllShow(sender: )),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWIllHide(sender: )),
+            name: UIResponder.keyboardDidHideNotification,
+            object: nil
+        )
+    }
+    
     private func setupLayout() {
         view.translatesAutoresizingMaskIntoConstraints = false
         buttonToTimerView.translatesAutoresizingMaskIntoConstraints = false
@@ -54,72 +119,6 @@ final class ViewController: UIViewController, UITextFieldDelegate {
             button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50),
             button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -100)
         ])
-        
-        buttonToTimerView.addTarget(self, action: #selector(goTimerPage(_ :)), for: .touchUpInside)
-        buttonForAbove.addTarget(self, action: #selector(openNextPage(_ :)), for: .touchUpInside)
-        button.addTarget(self, action: #selector(getFortune(_ :)), for: .touchUpInside)
-    }
-    
-    private lazy var buttonToTimerView: UIButton = {
-        let view = UIButton()
-        view.setTitleColor(.green, for: .normal)
-        view.setTitle("Go to Timer", for: .normal)
-        return view
-    }()
-
-    private lazy var text: UITextField = {
-        let view = UITextField()
-        view.borderStyle = .roundedRect
-        // 自動的にキーボードを表示する
-        view.becomeFirstResponder()
-        view.placeholder = "Please enter your name"
-        return view
-    }()
-    
-    private lazy var buttonForAbove: UIButton = {
-        let view = UIButton()
-        view.setTitleColor(.blue, for: .normal)
-        view.setTitle("Send", for: .normal)
-        return view
-    }()
-        
-    private lazy var circle: PaddingLabel = {
-        let view = PaddingLabel()
-        view.padding = UIEdgeInsets(top: 60, left: 60, bottom: 60, right: 60)
-        view.frame.size.width = 200
-        view.frame.size.height = 200
-        view.backgroundColor = .red
-        view.clipsToBounds = true
-        view.layer.cornerRadius = 100
-        view.textAlignment = .center
-        view.textColor = .white
-        view.text = "Fortune"
-        return view
-    }()
-
-    private lazy var button: UIButton = {
-        let view = UIButton()
-        view.backgroundColor = .darkGray
-        view.layer.masksToBounds = true
-        view.layer.cornerRadius = 20
-        view.setTitleColor(.white, for: .normal)
-        view.setTitle("Draw a Fortune", for: .normal)
-        return view
-    }()
-    
-    private func notifyKeyboardAction() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(keyboardWIllShow(sender: )),
-            name: UIResponder.keyboardWillShowNotification,
-            object: nil
-        )
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(keyboardWIllHide(sender: )),
-            name: UIResponder.keyboardDidHideNotification,
-            object: nil
-        )
     }
     
     // TODO: ボタンを押すと画面が固まる(かつ次のページに遷移しない)
@@ -148,7 +147,7 @@ final class ViewController: UIViewController, UITextFieldDelegate {
     @objc private func getFortune(_ sender: UIButton) {
         let fortune = ["大吉", "吉", "中吉", "凶"]
         let random = Int.random(in: 1...fortune.count)
-        self.circle.text = fortune[Int(random)]
+        self.circle.text = fortune[Int(random) - 1]
     }
         
     // キーボードが表示された時
