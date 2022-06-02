@@ -22,7 +22,10 @@ final class NameJudgeViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
     }
-        
+            
+    override func viewDidAppear(_ animated: Bool) {
+    }
+    
     // MARK: private
     
     private lazy var text: UILabel = {
@@ -47,7 +50,7 @@ final class NameJudgeViewController: UIViewController {
         let view = UIButton()
         view.setTitleColor(.blue, for: .normal)
         view.setTitle("X", for: .normal)
-        closeButton.addTarget(self, action: #selector(closeModal(_ :)), for: .touchUpInside)
+        view.addTarget(self, action: #selector(closeModal(_ :)), for: .touchUpInside)
         return view
     }()
     
