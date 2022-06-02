@@ -159,16 +159,20 @@ final class ViewController: UIViewController, UITextFieldDelegate {
         )
     }
     
-    // TODO: ボタンを押すと画面が固まる(かつ次のページに遷移しない)
-    // UIViewController → UIViewController (Embed)
+    // 1: UIViewController → UIViewController (Embed)
     @objc private func goTimerPage(_ sender: UIButton) {
+        let viewController = UIViewController()
+        view.window?.rootViewController = viewController
+        
         let timerViewController = TimerViewController()
-        addChild(timerViewController)
-        view.addSubview(timerViewController.view)
-        timerViewController.didMove(toParent: self)
+        viewController.addChild(timerViewController)
+        viewController.view.addSubview(timerViewController.view)
+        timerViewController.didMove(toParent: viewController)
     }
     
-    // UINavigationController → UIViewController (Root) → UIViewController (Show Detail)
+    // 2: UINavigationController → UIViewController (Root) → UIViewController (Show Detail)
+    // 1のUIViewControllerで画面遷移をすると、遷移後のナビバー左にBackボタンが自動では付かないが、
+    // 2のUIViewControllerを継承したUINavigationControllerだと付く。
     @objc private func hiGoTimerPage(_ sender: UIButton) {
         let viewController = UIViewController()
         let navigationController = UINavigationController(rootViewController: viewController)
