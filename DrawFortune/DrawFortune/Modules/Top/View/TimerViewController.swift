@@ -16,6 +16,7 @@ final class TimerViewController: UIViewController {
     
     private lazy var timerNumber: UILabel = {
         let view = UILabel()
+        view.text = "Time"
         return view
     }()
     
@@ -25,6 +26,8 @@ final class TimerViewController: UIViewController {
     }()
         
     private func setupLayout() {
+        view.backgroundColor = .white
+        
         timerNumber.translatesAutoresizingMaskIntoConstraints = false
         HstackView.translatesAutoresizingMaskIntoConstraints = false
 

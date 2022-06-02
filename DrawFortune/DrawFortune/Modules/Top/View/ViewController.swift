@@ -104,6 +104,9 @@ final class ViewController: UIViewController, UITextFieldDelegate {
     }()
         
     private func setupLayout() {
+        view.backgroundColor = .white
+        view.addSubview(rootVStack)
+        
         view.translatesAutoresizingMaskIntoConstraints = false
         rootVStack.translatesAutoresizingMaskIntoConstraints = false
         baseHStack.translatesAutoresizingMaskIntoConstraints = false
@@ -113,9 +116,6 @@ final class ViewController: UIViewController, UITextFieldDelegate {
         buttonForAbove.translatesAutoresizingMaskIntoConstraints = false
         circle.translatesAutoresizingMaskIntoConstraints = false
         button.translatesAutoresizingMaskIntoConstraints = false
-
-        view.backgroundColor = .white
-        view.addSubview(rootVStack)
 
         rootVStack.addArrangedSubview(baseHStack)
         rootVStack.addArrangedSubview(text)
@@ -168,11 +168,11 @@ final class ViewController: UIViewController, UITextFieldDelegate {
         timerViewController.didMove(toParent: self)
     }
     
-    // TODO: もう一段階下のViewControllerに実装すべき内容
     // UINavigationController → UIViewController (Root) → UIViewController (Show Detail)
     @objc private func hiGoTimerPage(_ sender: UIButton) {
         let viewController = UIViewController()
         let navigationController = UINavigationController(rootViewController: viewController)
+        view.window?.rootViewController = navigationController
 
         let timerViewController = TimerViewController()
         viewController.navigationController?.pushViewController(timerViewController, animated: true)
