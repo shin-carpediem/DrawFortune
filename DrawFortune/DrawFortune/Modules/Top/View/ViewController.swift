@@ -172,10 +172,16 @@ final class ViewController: UIViewController, UITextFieldDelegate {
     
     // 2: UINavigationController → UIViewController (Root) → UIViewController (Show Detail)
     // 1のUIViewControllerで画面遷移をすると、遷移後のナビバー左にBackボタンが自動では付かないが、
-    // 2のUIViewControllerを継承したUINavigationControllerだと付く。
+    // 2のUIViewControllerを継承したUINavigationControllerだと付く。= UINavigationBarが自動生成
     @objc private func hiGoTimerPage(_ sender: UIButton) {
         let viewController = UIViewController()
         let navigationController = UINavigationController(rootViewController: viewController)
+        // https://www.fuwamaki.com/article/140
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .yellow
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.gray]
+        navigationController.navigationBar.scrollEdgeAppearance = appearance
         view.window?.rootViewController = navigationController
 
         let timerViewController = TimerViewController()
@@ -194,7 +200,7 @@ final class ViewController: UIViewController, UITextFieldDelegate {
             // iOS 13以降、Modalの場合、遷移先のViewDidAppearが呼ばれないので、遷移元・先でdelegateを指定する
             // https://zenn.dev/tanukidevelop/articles/4d72e467c77241
             nameJudgeViewController.presentationController?.delegate = self
-            present(nameJudgeViewController, animated: true, completion: nil)
+            present(nameJudgeViewController, animated: true)
         }
     }
 

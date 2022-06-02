@@ -55,12 +55,13 @@ final class NameJudgeViewController: UIViewController {
     }()
     
     private func setupLayout() {
+        view.backgroundColor = .white
+
         view.translatesAutoresizingMaskIntoConstraints = false
         text.translatesAutoresizingMaskIntoConstraints = false
         score.translatesAutoresizingMaskIntoConstraints = false
         closeButton.translatesAutoresizingMaskIntoConstraints = false
 
-        view.backgroundColor = .white
         view.addSubview(text)
         view.addSubview(score)
         view.addSubview(closeButton)
