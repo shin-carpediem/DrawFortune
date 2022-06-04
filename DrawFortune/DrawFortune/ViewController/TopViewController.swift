@@ -1,11 +1,6 @@
 import UIKit
 
-final class ViewController: UIViewController, UITextFieldDelegate {
-    func textFieldShouldReturn(_ text: UITextField) -> Bool {
-        text.resignFirstResponder()
-        return true
-    }
-    
+final class ViewController: UIViewController {
     // MARK: override
     
     // タッチでキーボードを閉じる
@@ -62,6 +57,7 @@ final class ViewController: UIViewController, UITextFieldDelegate {
 
     private lazy var text: UITextField = {
         let view = UITextField()
+        view.delegate = self
         view.borderStyle = .roundedRect
         view.layer.borderColor = .init(genericCMYKCyan: 0.3, magenta: 0.3, yellow: 0.3, black: 0.3, alpha: 0.3)
         view.layer.borderWidth = 2
@@ -144,7 +140,7 @@ final class ViewController: UIViewController, UITextFieldDelegate {
             button.bottomAnchor.constraint(equalTo: rootVStack.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
-    
+        
     private func notifyKeyboardAction() {
         NotificationCenter.default.addObserver(
             self,
@@ -218,5 +214,22 @@ final class ViewController: UIViewController, UITextFieldDelegate {
 extension ViewController: UIAdaptivePresentationControllerDelegate {
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
         text.text = ""
+    }
+}
+
+extension ViewController: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let maxLength: Int = 10
+        let strings = textField.text! + string
+        if strings.count <= maxLength {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func textFieldShouldReturn(_ text: UITextField) -> Bool {
+        text.resignFirstResponder()
+        return true
     }
 }
