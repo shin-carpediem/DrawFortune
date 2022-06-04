@@ -207,7 +207,7 @@ final class ViewController: UIViewController, UITextFieldDelegate {
     @objc private func getFortune(_ sender: UIButton) {
         let fortune = ["大吉", "吉", "中吉", "凶"]
         let random = Int.random(in: 1...fortune.count)
-        self.circle.text = fortune[Int(random) - 1]
+        circle.text = fortune[Int(random) - 1]
     }
         
     // キーボードが表示された時
