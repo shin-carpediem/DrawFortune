@@ -1,7 +1,6 @@
 import UIKit
 
 final class ViewController: UIViewController, UITextFieldDelegate {
-            
     func textFieldShouldReturn(_ text: UITextField) -> Bool {
         text.resignFirstResponder()
         return true
@@ -26,6 +25,8 @@ final class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     // MARK: private
+    
+    private let router = Router()
     
     private let rootVStack: UIStackView = {
         let view = UIStackView()
@@ -54,8 +55,8 @@ final class ViewController: UIViewController, UITextFieldDelegate {
     private lazy var rightButtonToTimerView: UIButton = {
         let view = UIButton()
         view.setTitleColor(.green, for: .normal)
-        view.setTitle("Hi, Go to Timer!!", for: .normal)
-        view.addTarget(self, action: #selector(hiGoTimerPage(_ :)), for: .touchUpInside)
+        view.setTitle("Hi, Go to Browser", for: .normal)
+        view.addTarget(self, action: #selector(GoBrowserPage(_ :)), for: .touchUpInside)
         return view
     }()
 
@@ -128,8 +129,8 @@ final class ViewController: UIViewController, UITextFieldDelegate {
         
         NSLayoutConstraint.activate([
             rootVStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            rootVStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 5),
-            rootVStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 5),
+            rootVStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            rootVStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             rootVStack.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
 
             baseHStack.bottomAnchor.constraint(equalTo: text.topAnchor, constant: -100),
@@ -159,33 +160,12 @@ final class ViewController: UIViewController, UITextFieldDelegate {
         )
     }
     
-    // 1: UIViewController → UIViewController (Embed)
     @objc private func goTimerPage(_ sender: UIButton) {
-        let viewController = UIViewController()
-        view.window?.rootViewController = viewController
-        
-        let timerViewController = TimerViewController()
-        viewController.addChild(timerViewController)
-        viewController.view.addSubview(timerViewController.view)
-        timerViewController.didMove(toParent: viewController)
+        router.goTimerScreen(view)
     }
     
-    // 2: UINavigationController → UIViewController (Root) → UIViewController (Show Detail)
-    // 1のUIViewControllerで画面遷移をすると、遷移後のナビバー左にBackボタンが自動では付かないが、
-    // 2のUIViewControllerを継承したUINavigationControllerだと付く。= UINavigationBarが自動生成
-    @objc private func hiGoTimerPage(_ sender: UIButton) {
-        let viewController = UIViewController()
-        let navigationController = UINavigationController(rootViewController: viewController)
-        // https://www.fuwamaki.com/article/140
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = .yellow
-        appearance.titleTextAttributes = [.foregroundColor: UIColor.gray]
-        navigationController.navigationBar.scrollEdgeAppearance = appearance
-        view.window?.rootViewController = navigationController
-
-        let timerViewController = TimerViewController()
-        viewController.navigationController?.pushViewController(timerViewController, animated: true)
+    @objc private func GoBrowserPage(_ sender: UIButton) {
+        router.goToBrowserScreen(view)
     }
 
     // UIViewController → UIViewController (Present Modally)

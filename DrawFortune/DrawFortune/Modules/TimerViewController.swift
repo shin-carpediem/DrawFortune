@@ -1,7 +1,6 @@
 import UIKit
 
 final class TimerViewController: UIViewController {
-        
     // MARK: override
     
     override func viewDidLoad() {

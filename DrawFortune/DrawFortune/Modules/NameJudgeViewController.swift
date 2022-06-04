@@ -1,7 +1,6 @@
 import UIKit
 
 final class NameJudgeViewController: UIViewController {
-    
     var userName: String
     
     init(_ userName: String) {
