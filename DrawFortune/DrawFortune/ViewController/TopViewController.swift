@@ -26,7 +26,7 @@ final class ViewController: UIViewController, UITextFieldDelegate {
     
     // MARK: private
     
-    private let router = Router()
+    private let router = TopRouter()
     
     private let rootVStack: UIStackView = {
         let view = UIStackView()

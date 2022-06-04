@@ -1,6 +1,6 @@
 import UIKit
 
-class Router: UIViewController {
+class TopRouter: UIViewController {
     
     // 1: UIViewController → UIViewController (Embed)
     func goTimerScreen(_ view: UIView) {
