@@ -99,12 +99,14 @@ final class ViewController: UIViewController {
         view.addTarget(self, action: #selector(getFortune(_ :)), for: .touchUpInside)
         return view
     }()
-        
+    
     private func setupLayout() {
         view.backgroundColor = .white
+        view.addSubview(router.activityIndicator)
         view.addSubview(rootVStack)
         
         view.translatesAutoresizingMaskIntoConstraints = false
+        router.activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         rootVStack.translatesAutoresizingMaskIntoConstraints = false
         baseHStack.translatesAutoresizingMaskIntoConstraints = false
         buttonToTimerView.translatesAutoresizingMaskIntoConstraints = false
@@ -124,6 +126,9 @@ final class ViewController: UIViewController {
         baseHStack.addArrangedSubview(rightButtonToTimerView)
         
         NSLayoutConstraint.activate([
+            router.activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            router.activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            
             rootVStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             rootVStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             rootVStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
@@ -140,7 +145,7 @@ final class ViewController: UIViewController {
             button.bottomAnchor.constraint(equalTo: rootVStack.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
-        
+    
     private func notifyKeyboardAction() {
         NotificationCenter.default.addObserver(
             self,

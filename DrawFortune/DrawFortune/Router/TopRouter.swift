@@ -1,6 +1,12 @@
 import UIKit
 
 class TopRouter: UIViewController {
+    public let activityIndicator: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView()
+        view.color = .blue
+        return view
+    }()
+    
     // 1: UIViewController → UIViewController (Embed)
     func goTimerScreen(_ view: UIView) {
         let viewController = UIViewController()
@@ -25,7 +31,20 @@ class TopRouter: UIViewController {
         appearance.titleTextAttributes = [.foregroundColor: UIColor.gray]
         navigationController.navigationBar.scrollEdgeAppearance = appearance
         view.window?.rootViewController = navigationController
-
-        viewController.navigationController?.pushViewController(BrowserViewController(), animated: true)
+        showActivityIndicator()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            viewController.navigationController?.pushViewController(BrowserViewController(), animated: true)
+        }
+    }
+    
+    // MARK: private
+    
+    private func showActivityIndicator() {
+        activityIndicator.startAnimating()
+    }
+    
+    private func hideActivityIndicator() {
+        activityIndicator.stopAnimating()
     }
 }

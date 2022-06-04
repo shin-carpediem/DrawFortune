@@ -16,8 +16,10 @@ final class BrowserViewController: UIViewController, WKUIDelegate {
     }
     
     override func viewDidLoad() {
+        // 返り値のないメソッドをoverrideする時は、必ず親要素のメソッドを呼ぶ(でないと必須のメソッド(?がついていないメソッド)が呼ばれない)
         super.viewDidLoad()
         openUrl(urlString)
+        setupLayout()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -35,5 +37,16 @@ final class BrowserViewController: UIViewController, WKUIDelegate {
         let url = URL(string: string)
         let request = URLRequest(url: url!)
         webView.load(request)
+    }
+    
+    private lazy var topBorder: CALayer = {
+        let view = CALayer()
+        view.frame = CGRect(x: 0.0, y: 100.0, width: webView.frame.size.width, height: 10.0)
+        view.backgroundColor = UIColor.lightGray.cgColor
+        return view
+    }()
+    
+    private func setupLayout() {
+        webView.layer.addSublayer(topBorder) // 追加の仕方に注意
     }
 }
