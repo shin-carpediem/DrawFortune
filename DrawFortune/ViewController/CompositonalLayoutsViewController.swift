@@ -6,6 +6,8 @@ fileprivate var dummyData = ["1", "2", "3", "4", "5"]
 
 
 final class CompositonalLayoutsViewController: UIViewController {
+    var count: Int = dummyData.count
+    
     /// コレクションビューの各セルに追加されるデータ
     var itemList: [String] {
         get { collectionView.itemList }
@@ -27,7 +29,12 @@ final class CompositonalLayoutsViewController: UIViewController {
         return view
     }()
     
-    private let collectionView = CollectionView()
+    private let collectionView: CollectionView = {
+        let view = CollectionView()
+        // コレクションビュー自体を左右に反転
+        view.transform = CGAffineTransform(scaleX: -1, y: 1)
+        return view
+    }()
     
     private lazy var addDataButton: UIButton = {
         let view = UIButton()
@@ -62,7 +69,8 @@ final class CompositonalLayoutsViewController: UIViewController {
     
     // ダミーデータを追加
     @objc private func addDummyData(_ sender: UIButton) {
-        dummyData.append("6")
+        count += 1
+        dummyData.append(String(count))
         updateDisplay()
     }
 }
@@ -133,6 +141,7 @@ extension CollectionView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollectionCell.identifier, for: indexPath) as! CollectionCell
         cell.labelText = itemList[indexPath.item]
+        cell.transform = CGAffineTransform(scaleX: -1, y: 1)
         return cell
     }
 }
