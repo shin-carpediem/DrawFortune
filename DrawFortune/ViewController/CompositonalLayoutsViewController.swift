@@ -2,16 +2,20 @@ import UIKit
 
 
 // ダミーデータ
-fileprivate var dummyData = ["1", "2", "3", "4", "5"]
+fileprivate var dummyData = ["1", "2", "3", "4", "5", "6", "7"]
 
 
 final class CompositonalLayoutsViewController: UIViewController {
-    var count: Int = dummyData.count
-    
     /// コレクションビューの各セルに追加されるデータ
     var itemList: [String] {
         get { collectionView.itemList }
         set { collectionView.itemList = newValue }
+    }
+    
+    /// 要素の並ぶ順番
+    var gravity: CollectionView.Gravity {
+        get { collectionView.gravity }
+        set { collectionView.gravity = newValue }
     }
     
     // MARK: - Override
@@ -40,6 +44,8 @@ final class CompositonalLayoutsViewController: UIViewController {
     }()
     
     private func construct() {
+        gravity = .right
+        
         view.backgroundColor = .white
         
         vStack.translatesAutoresizingMaskIntoConstraints = false
@@ -58,14 +64,31 @@ final class CompositonalLayoutsViewController: UIViewController {
     }
     
     private func updateDisplay() {
-        // ダミーデータを注入
-        itemList = dummyData
+        switch gravity {
+        case .left:
+            itemList = dummyData
+        
+        case .right:
+            // 適切な並び順になったダミーデータを注入
+            itemList = optimizeDummyDataArray(dummyData)
+        }
+    }
+    
+    // ダミーデータを適切な並び順にする（5つ毎にスライスして逆順にし、結合する）
+    private func optimizeDummyDataArray(_ dummyData: [String]) -> [String] {
+        var newArray = dummyData
+        let splittedReverseArray1 = newArray.safeRange(range: 0..<5).reversed().map { $0 }
+        let splittedReverseArray2 = newArray.safeRange(range: 5..<10).reversed().map { $0 }
+        let splittedReverseArray3 = newArray.safeRange(range: 10..<15).reversed().map { $0 }
+        let splittedReverseArray4 = newArray.safeRange(range: 15..<20).reversed().map { $0 }
+        
+        newArray = splittedReverseArray1 + splittedReverseArray2 + splittedReverseArray3 + splittedReverseArray4
+        return newArray
     }
     
     // ダミーデータを追加
     @objc private func addDummyData(_ sender: UIButton) {
-        count += 1
-        dummyData.append(String(count))
+        dummyData.append(String(itemList.count + 1))
         updateDisplay()
     }
 }
@@ -84,7 +107,9 @@ final class CollectionView: UICollectionView {
         case right
     }
     
-    var gravity: Gravity = .right
+    var gravity: Gravity = .left {
+        didSet { updateDisplay() }
+    }
     
     // MARK: - Override
     
@@ -101,7 +126,7 @@ final class CollectionView: UICollectionView {
     // MARK: - Private
     
     private let compositionalLayout: UICollectionViewLayout = {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.3),
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.2),
                                               heightDimension: .fractionalHeight(1.0))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
@@ -120,6 +145,11 @@ final class CollectionView: UICollectionView {
         delegate = self
         dataSource = self
         register(CollectionCell.self, forCellWithReuseIdentifier: CollectionCell.identifier)
+        
+        updateDisplay()
+    }
+    
+    private func updateDisplay() {
         switch gravity {
         case .left:
             transform = CGAffineTransform(scaleX: 1, y: 1)
@@ -129,10 +159,6 @@ final class CollectionView: UICollectionView {
             transform = CGAffineTransform(scaleX: -1, y: 1)
         }
         
-        updateDisplay()
-    }
-    
-    private func updateDisplay() {
         reloadData()
     }
 }
@@ -214,6 +240,13 @@ final class CollectionCell: UICollectionViewCell {
     
     private func updateDisplay() {
         label.text = labelText
+    }
+}
+
+// 範囲外が指定されても、取れる限りの要素を取得
+extension Array {
+    func safeRange(range: Range<Int>) -> ArraySlice<Element> {
+        return self.dropFirst(range.startIndex).prefix(range.endIndex)
     }
 }
 
