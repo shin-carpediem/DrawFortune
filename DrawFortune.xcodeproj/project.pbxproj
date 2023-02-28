@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B6804FC29AD8DB50083C21B /* CompositonalLayoutsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6804FB29AD8DB50083C21B /* CompositonalLayoutsViewController.swift */; };
 		F5463C75282FA0B800C9E6BC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5463C74282FA0B800C9E6BC /* AppDelegate.swift */; };
 		F5463C77282FA0B800C9E6BC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5463C76282FA0B800C9E6BC /* SceneDelegate.swift */; };
 		F5463C79282FA0B800C9E6BC /* TopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5463C78282FA0B800C9E6BC /* TopViewController.swift */; };
@@ -40,6 +41,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0B6804FB29AD8DB50083C21B /* CompositonalLayoutsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositonalLayoutsViewController.swift; sourceTree = "<group>"; };
 		F5463C71282FA0B800C9E6BC /* DrawFortune.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DrawFortune.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5463C74282FA0B800C9E6BC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F5463C76282FA0B800C9E6BC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 				F5463CB02830982300C9E6BC /* NameJudgeViewController.swift */,
 				F5463CB5283C3D3200C9E6BC /* TimerViewController.swift */,
 				F5463CB9284B24BD00C9E6BC /* BrowserViewController.swift */,
+				0B6804FB29AD8DB50083C21B /* CompositonalLayoutsViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -297,6 +300,7 @@
 				F5463CAE282FB77800C9E6BC /* PaddingLabel.swift in Sources */,
 				F5463CBA284B24BD00C9E6BC /* BrowserViewController.swift in Sources */,
 				F5463C79282FA0B800C9E6BC /* TopViewController.swift in Sources */,
+				0B6804FC29AD8DB50083C21B /* CompositonalLayoutsViewController.swift in Sources */,
 				F5463C75282FA0B800C9E6BC /* AppDelegate.swift in Sources */,
 				F5463CB6283C3D3200C9E6BC /* TimerViewController.swift in Sources */,
 				F5463C77282FA0B800C9E6BC /* SceneDelegate.swift in Sources */,
