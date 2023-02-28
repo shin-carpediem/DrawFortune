@@ -1,10 +1,5 @@
 import UIKit
 
-
-// ダミーデータ
-fileprivate var dummyData = ["1", "2", "3", "4", "5", "6", "7"]
-
-
 final class CompositonalLayoutsViewController: UIViewController {
     /// コレクションビューの各セルに追加されるデータ
     var itemList: [String] {
@@ -44,6 +39,7 @@ final class CompositonalLayoutsViewController: UIViewController {
     }()
     
     private func construct() {
+        // TODO: 一旦ここで順番を変えてる
         gravity = .right
         
         view.backgroundColor = .white
@@ -64,31 +60,41 @@ final class CompositonalLayoutsViewController: UIViewController {
     }
     
     private func updateDisplay() {
-        switch gravity {
-        case .left:
-            itemList = dummyData
-        
-        case .right:
-            // 適切な並び順になったダミーデータを注入
-            itemList = optimizeDummyDataArray(dummyData)
-        }
+        optimizeDummyDataArraySortOrder()
     }
     
-    // ダミーデータを適切な並び順にする（5つ毎にスライスして逆順にし、結合する）
-    private func optimizeDummyDataArray(_ dummyData: [String]) -> [String] {
+    // ダミーデータ
+    private var dummyData = ["1", "2", "3"]
+    
+    // ダミーデータを適切な並び順にする（5つ毎にスライスして逆順にし、結合する & 右下に異なるタイプのデータを追加）
+    private func optimizeDummyDataArraySortOrder() {
         var newArray = dummyData
-        let splittedReverseArray1 = newArray.safeRange(range: 0..<5).reversed().map { $0 }
-        let splittedReverseArray2 = newArray.safeRange(range: 5..<10).reversed().map { $0 }
-        let splittedReverseArray3 = newArray.safeRange(range: 10..<15).reversed().map { $0 }
-        let splittedReverseArray4 = newArray.safeRange(range: 15..<20).reversed().map { $0 }
-        
-        newArray = splittedReverseArray1 + splittedReverseArray2 + splittedReverseArray3 + splittedReverseArray4
-        return newArray
+        switch gravity {
+        case .left:
+            newArray.append("Different")
+            itemList = newArray
+            
+        case .right:
+            // TODO: やばい
+            let splittedReverseArray1 = newArray.safeRange(0..<5).reversed().map { $0 }
+            let splittedReverseArray2 = newArray.safeRange(5..<10).reversed().map { $0 }
+            let splittedReverseArray3 = newArray.safeRange(10..<15).reversed().map { $0 }
+            if newArray.count <= 4 {
+                // セルが1行目に収まる(1~5個)時
+                itemList = ["Different"] + splittedReverseArray1 + splittedReverseArray2
+            } else if newArray.count <= 9 {
+                // セルが2行(6~10個)の時
+                itemList = splittedReverseArray1 + ["Different"] + splittedReverseArray2
+            } else if newArray.count == 10 {
+                // セルが11個の時
+                itemList = splittedReverseArray1 + splittedReverseArray2 + ["Different"] + splittedReverseArray3
+            }
+        }
     }
     
     // ダミーデータを追加
     @objc private func addDummyData(_ sender: UIButton) {
-        dummyData.append(String(itemList.count + 1))
+        dummyData.append(String(itemList.count))
         updateDisplay()
     }
 }
@@ -178,6 +184,7 @@ extension CollectionView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollectionCell.identifier, for: indexPath) as! CollectionCell
         cell.labelText = itemList[indexPath.item]
+        cell.isDifferentCell = itemList[indexPath.item] == "Different"
         switch gravity {
         case .left:
             cell.transform  = CGAffineTransform(scaleX: 1, y: 1)
@@ -198,6 +205,11 @@ final class CollectionCell: UICollectionViewCell {
         didSet { updateDisplay() }
     }
     
+    /// 通常とは違うセルか
+    var isDifferentCell: Bool = false {
+        didSet { updateDisplay() }
+    }
+    
     // MARK: - Override
     
     override init(frame: CGRect) {
@@ -213,14 +225,13 @@ final class CollectionCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         labelText = ""
+        isDifferentCell = false
     }
     
     // MARK: - Private
     
     private let label: UILabel = {
         let view = UILabel()
-        view.textColor = .black
-        view.backgroundColor = .brown
         return view
     }()
     
@@ -240,12 +251,19 @@ final class CollectionCell: UICollectionViewCell {
     
     private func updateDisplay() {
         label.text = labelText
+        if isDifferentCell {
+            label.textColor = .blue
+            label.backgroundColor = .systemPink
+        } else {
+            label.textColor = .black
+            label.backgroundColor = .brown
+        }
     }
 }
 
-// 範囲外が指定されても、取れる限りの要素を取得
 extension Array {
-    func safeRange(range: Range<Int>) -> ArraySlice<Element> {
+    // 範囲外が指定されても、取れる限りの要素を取得
+    func safeRange(_ range: Range<Int>) -> ArraySlice<Element> {
         return self.dropFirst(range.startIndex).prefix(range.endIndex)
     }
 }
@@ -294,7 +312,7 @@ struct CollectionViewPreviewProvider: PreviewProvider {
             Spacer(minLength: 50)
             
             Text("コレクションビュー")
-            CollectionViewPreviewWrapper(itemList: dummyData)
+            CollectionViewPreviewWrapper(itemList: ["1", "2", "3"])
         }
         .padding()
         .previewLayout(.sizeThatFits)
