@@ -29,12 +29,7 @@ final class CompositonalLayoutsViewController: UIViewController {
         return view
     }()
     
-    private let collectionView: CollectionView = {
-        let view = CollectionView()
-        // コレクションビュー自体を左右に反転
-        view.transform = CGAffineTransform(scaleX: -1, y: 1)
-        return view
-    }()
+    private let collectionView = CollectionView()
     
     private lazy var addDataButton: UIButton = {
         let view = UIButton()
@@ -75,18 +70,26 @@ final class CompositonalLayoutsViewController: UIViewController {
     }
 }
 
-// プレビュー用にコレクションビューを切り出している
 final class CollectionView: UICollectionView {
     /// コレクションビューの各セルに追加されるデータ
     var itemList: [String] = [] {
         didSet { updateDisplay() }
     }
     
+    /// 要素の並ぶ順番
+    enum Gravity {
+        /// 左から順に
+        case left
+        /// 右から順に
+        case right
+    }
+    
+    var gravity: Gravity = .right
+    
     // MARK: - Override
     
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: .zero, collectionViewLayout: compositionalLayout)
-        
         construct()
     }
     
@@ -117,6 +120,14 @@ final class CollectionView: UICollectionView {
         delegate = self
         dataSource = self
         register(CollectionCell.self, forCellWithReuseIdentifier: CollectionCell.identifier)
+        switch gravity {
+        case .left:
+            transform = CGAffineTransform(scaleX: 1, y: 1)
+            
+        case .right:
+            // コレクションビュー自体を左右に反転
+            transform = CGAffineTransform(scaleX: -1, y: 1)
+        }
         
         updateDisplay()
     }
@@ -141,7 +152,14 @@ extension CollectionView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollectionCell.identifier, for: indexPath) as! CollectionCell
         cell.labelText = itemList[indexPath.item]
-        cell.transform = CGAffineTransform(scaleX: -1, y: 1)
+        switch gravity {
+        case .left:
+            cell.transform  = CGAffineTransform(scaleX: 1, y: 1)
+            
+        case .right:
+            // セル自体を左右に反転
+            cell.transform = CGAffineTransform(scaleX: -1, y: 1)
+        }
         return cell
     }
 }
