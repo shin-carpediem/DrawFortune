@@ -2,7 +2,7 @@ import UIKit
 
 
 // ダミーデータ
-fileprivate let dummyData = ["hoge", "hugo", "gege", "heee", "bufoon"]
+fileprivate var dummyData = ["1", "2", "3", "4", "5"]
 
 
 final class CompositonalLayoutsViewController: UIViewController {
@@ -17,26 +17,53 @@ final class CompositonalLayoutsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         construct()
-        
-        // ダミーデータを注入
-        itemList = dummyData
     }
     
     // MARK: - Private
     
+    private let vStack: UIStackView = {
+        let view = UIStackView()
+        view.axis = .vertical
+        return view
+    }()
+    
     private let collectionView = CollectionView()
+    
+    private lazy var addDataButton: UIButton = {
+        let view = UIButton()
+        view.setTitle("Add One Data", for: .normal)
+        view.backgroundColor = .cyan
+        view.addTarget(self, action: #selector(addDummyData(_:)), for: .touchUpInside)
+        return view
+    }()
     
     private func construct() {
         view.backgroundColor = .white
         
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(collectionView)
+        vStack.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(vStack)
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            vStack.topAnchor.constraint(equalTo: view.topAnchor),
+            vStack.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            vStack.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            vStack.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+        
+        vStack.addArrangedSubview(collectionView)
+        vStack.addArrangedSubview(addDataButton)
+        
+        updateDisplay()
+    }
+    
+    private func updateDisplay() {
+        // ダミーデータを注入
+        itemList = dummyData
+    }
+    
+    // ダミーデータを追加
+    @objc private func addDummyData(_ sender: UIButton) {
+        dummyData.append("6")
+        updateDisplay()
     }
 }
 

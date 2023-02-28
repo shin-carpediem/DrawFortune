@@ -22,7 +22,8 @@ class TopRouter: UIViewController {
     // 1のUIViewControllerで画面遷移をすると、遷移後のナビバー左にBackボタンが自動では付かないが、
     // 2のUIViewControllerを継承したUINavigationControllerだと付く。= UINavigationBarが自動生成
     func goToBrowserScreen(_ view: UIView) {
-        let viewController = ViewController()
+//        let viewController = ViewController()
+        let viewController = CompositonalLayoutsViewController()
         let navigationController = UINavigationController(rootViewController: viewController)
         // https://www.fuwamaki.com/article/140
         let appearance = UINavigationBarAppearance()

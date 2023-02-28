@@ -2,7 +2,7 @@ import UIKit
 
 final class ViewController: UIViewController {
     // MARK: override
-    
+
     // タッチでキーボードを閉じる
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
@@ -12,17 +12,17 @@ final class ViewController: UIViewController {
         super.viewDidLoad()
         setupLayout()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
     }
-    
+
     // MARK: private
-    
+
     private let router = TopRouter()
-    
+
     private let rootVStack: UIStackView = {
         let view = UIStackView()
         view.axis = .vertical
@@ -30,7 +30,7 @@ final class ViewController: UIViewController {
         view.distribution = .equalSpacing
         return view
     }()
-    
+
     private let baseHStack: UIStackView = {
         let view = UIStackView()
         view.axis = .horizontal
@@ -38,7 +38,7 @@ final class ViewController: UIViewController {
         view.distribution = .equalSpacing
         return view
     }()
-            
+
     private lazy var buttonToTimerView: UIButton = {
         let view = UIButton()
         view.setTitleColor(.green, for: .normal)
@@ -46,7 +46,7 @@ final class ViewController: UIViewController {
         view.addTarget(self, action: #selector(goTimerPage(_ :)), for: .touchUpInside)
         return view
     }()
-    
+
     private lazy var rightButtonToTimerView: UIButton = {
         let view = UIButton()
         view.setTitleColor(.green, for: .normal)
@@ -66,7 +66,7 @@ final class ViewController: UIViewController {
         view.placeholder = "Please enter your name"
         return view
     }()
-    
+
     private lazy var buttonForAbove: UIButton = {
         let view = UIButton()
         view.setTitleColor(.blue, for: .normal)
@@ -74,7 +74,7 @@ final class ViewController: UIViewController {
         view.addTarget(self, action: #selector(openNextPage(_ :)), for: .touchUpInside)
         return view
     }()
-        
+
     private let circle: PaddingLabel = {
         let view = PaddingLabel()
         view.padding = UIEdgeInsets(top: 60, left: 60, bottom: 60, right: 60)
@@ -99,12 +99,12 @@ final class ViewController: UIViewController {
         view.addTarget(self, action: #selector(getFortune(_ :)), for: .touchUpInside)
         return view
     }()
-    
+
     private func setupLayout() {
         view.backgroundColor = .white
         view.addSubview(router.activityIndicator)
         view.addSubview(rootVStack)
-        
+
         view.translatesAutoresizingMaskIntoConstraints = false
         router.activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         rootVStack.translatesAutoresizingMaskIntoConstraints = false
@@ -124,11 +124,11 @@ final class ViewController: UIViewController {
 
         baseHStack.addArrangedSubview(buttonToTimerView)
         baseHStack.addArrangedSubview(rightButtonToTimerView)
-        
+
         NSLayoutConstraint.activate([
             router.activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             router.activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            
+
             rootVStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             rootVStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             rootVStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
@@ -145,7 +145,7 @@ final class ViewController: UIViewController {
             button.bottomAnchor.constraint(equalTo: rootVStack.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
-    
+
     private func notifyKeyboardAction() {
         NotificationCenter.default.addObserver(
             self,
@@ -160,11 +160,11 @@ final class ViewController: UIViewController {
             object: nil
         )
     }
-    
+
     @objc private func goTimerPage(_ sender: UIButton) {
         router.goTimerScreen(view)
     }
-    
+
     @objc private func GoBrowserPage(_ sender: UIButton) {
         router.goToBrowserScreen(view)
     }
@@ -190,7 +190,7 @@ final class ViewController: UIViewController {
         let random = Int.random(in: 1...fortune.count)
         circle.text = fortune[Int(random) - 1]
     }
-        
+
     // キーボードが表示された時
     @objc private func keyboardWIllShow(sender: NSNotification) {
         if text.isFirstResponder {
@@ -202,7 +202,7 @@ final class ViewController: UIViewController {
             })
         }
     }
-    
+
     // キーボードが閉じられた時
     @objc private func keyboardWIllHide(sender: NSNotification) {
         guard let userInfo = sender.userInfo else { return }
@@ -232,7 +232,7 @@ extension ViewController: UITextFieldDelegate {
             return false
         }
     }
-    
+
     func textFieldShouldReturn(_ text: UITextField) -> Bool {
         text.resignFirstResponder()
         return true
