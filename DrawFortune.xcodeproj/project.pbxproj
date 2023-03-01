@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		0B6804FC29AD8DB50083C21B /* CompositonalLayoutsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6804FB29AD8DB50083C21B /* CompositonalLayoutsViewController.swift */; };
+		0B68050229AF02280083C21B /* FlexLayout in Frameworks */ = {isa = PBXBuildFile; productRef = 0B68050129AF02280083C21B /* FlexLayout */; };
+		0B68050429AF02280083C21B /* FlexLayoutYoga in Frameworks */ = {isa = PBXBuildFile; productRef = 0B68050329AF02280083C21B /* FlexLayoutYoga */; };
+		0B68050629AF02280083C21B /* FlexLayoutYogaKit in Frameworks */ = {isa = PBXBuildFile; productRef = 0B68050529AF02280083C21B /* FlexLayoutYogaKit */; };
 		F5463C75282FA0B800C9E6BC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5463C74282FA0B800C9E6BC /* AppDelegate.swift */; };
 		F5463C77282FA0B800C9E6BC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5463C76282FA0B800C9E6BC /* SceneDelegate.swift */; };
 		F5463C79282FA0B800C9E6BC /* TopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5463C78282FA0B800C9E6BC /* TopViewController.swift */; };
@@ -66,6 +69,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0B68050229AF02280083C21B /* FlexLayout in Frameworks */,
+				0B68050429AF02280083C21B /* FlexLayoutYoga in Frameworks */,
+				0B68050629AF02280083C21B /* FlexLayoutYogaKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -182,6 +188,11 @@
 			dependencies = (
 			);
 			name = DrawFortune;
+			packageProductDependencies = (
+				0B68050129AF02280083C21B /* FlexLayout */,
+				0B68050329AF02280083C21B /* FlexLayoutYoga */,
+				0B68050529AF02280083C21B /* FlexLayoutYogaKit */,
+			);
 			productName = DrawFortune;
 			productReference = F5463C71282FA0B800C9E6BC /* DrawFortune.app */;
 			productType = "com.apple.product-type.application";
@@ -254,6 +265,9 @@
 				Base,
 			);
 			mainGroup = F5463C68282FA0B800C9E6BC;
+			packageReferences = (
+				0B68050029AF02280083C21B /* XCRemoteSwiftPackageReference "FlexLayout" */,
+			);
 			productRefGroup = F5463C72282FA0B800C9E6BC /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -630,6 +644,35 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		0B68050029AF02280083C21B /* XCRemoteSwiftPackageReference "FlexLayout" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/layoutBox/FlexLayout";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0B68050129AF02280083C21B /* FlexLayout */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0B68050029AF02280083C21B /* XCRemoteSwiftPackageReference "FlexLayout" */;
+			productName = FlexLayout;
+		};
+		0B68050329AF02280083C21B /* FlexLayoutYoga */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0B68050029AF02280083C21B /* XCRemoteSwiftPackageReference "FlexLayout" */;
+			productName = FlexLayoutYoga;
+		};
+		0B68050529AF02280083C21B /* FlexLayoutYogaKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0B68050029AF02280083C21B /* XCRemoteSwiftPackageReference "FlexLayout" */;
+			productName = FlexLayoutYogaKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F5463C69282FA0B800C9E6BC /* Project object */;
 }
