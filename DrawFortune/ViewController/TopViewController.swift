@@ -13,12 +13,6 @@ final class ViewController: UIViewController {
         setupLayout()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-    }
-
     // MARK: private
 
     private let router = TopRouter()
@@ -43,7 +37,7 @@ final class ViewController: UIViewController {
         let view = UIButton()
         view.setTitleColor(.green, for: .normal)
         view.setTitle("Go to Timer", for: .normal)
-        view.addTarget(self, action: #selector(goTimerPage(_ :)), for: .touchUpInside)
+        view.addTarget(self, action: #selector(goTimerPage), for: .touchUpInside)
         return view
     }()
 
@@ -51,7 +45,7 @@ final class ViewController: UIViewController {
         let view = UIButton()
         view.setTitleColor(.green, for: .normal)
         view.setTitle("Hi, Go to Browser", for: .normal)
-        view.addTarget(self, action: #selector(GoBrowserPage(_ :)), for: .touchUpInside)
+        view.addTarget(self, action: #selector(GoBrowserPage), for: .touchUpInside)
         return view
     }()
 
@@ -71,7 +65,7 @@ final class ViewController: UIViewController {
         let view = UIButton()
         view.setTitleColor(.blue, for: .normal)
         view.setTitle("Send", for: .normal)
-        view.addTarget(self, action: #selector(openNextPage(_ :)), for: .touchUpInside)
+        view.addTarget(self, action: #selector(openNextPage), for: .touchUpInside)
         return view
     }()
 
@@ -96,7 +90,7 @@ final class ViewController: UIViewController {
         view.layer.cornerRadius = 20
         view.setTitleColor(.white, for: .normal)
         view.setTitle("Draw a Fortune", for: .normal)
-        view.addTarget(self, action: #selector(getFortune(_ :)), for: .touchUpInside)
+        view.addTarget(self, action: #selector(getFortune), for: .touchUpInside)
         return view
     }()
 
@@ -149,13 +143,13 @@ final class ViewController: UIViewController {
     private func notifyKeyboardAction() {
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(keyboardWIllShow(sender: )),
+            selector: #selector(keyboardWIllShow),
             name: UIResponder.keyboardWillShowNotification,
             object: nil
         )
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(keyboardWIllHide(sender: )),
+            selector: #selector(keyboardWIllHide),
             name: UIResponder.keyboardDidHideNotification,
             object: nil
         )
@@ -172,7 +166,7 @@ final class ViewController: UIViewController {
     // UIViewController → UIViewController (Present Modally)
     @objc private func openNextPage(_ sender: UIButton) {
         guard let inputText = text.text else { return }
-        if (inputText == "") {
+        if inputText.isEmpty {
             let alertController = UIAlertController(title: "名前入力欄が空です", message: "名前を1文字以上入力してください", preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             present(alertController, animated: true)
@@ -196,9 +190,8 @@ final class ViewController: UIViewController {
         if text.isFirstResponder {
             guard let userInfo = sender.userInfo else { return }
             let duration: Float = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as! NSNumber).floatValue
-            UIView.animate(withDuration: TimeInterval(duration), animations: { () -> Void in
-                let transform = CGAffineTransform(translationX: 0, y: -150)
-                self.view.transform = transform
+            UIView.animate(withDuration: TimeInterval(duration), animations: {
+                self.view.transform = CGAffineTransform(translationX: 0, y: -150)
             })
         }
     }
@@ -207,13 +200,13 @@ final class ViewController: UIViewController {
     @objc private func keyboardWIllHide(sender: NSNotification) {
         guard let userInfo = sender.userInfo else { return }
         let duration: Float = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as! NSNumber).floatValue
-        UIView.animate(withDuration: TimeInterval(duration), animations: { () -> Void in
+        UIView.animate(withDuration: TimeInterval(duration), animations: {
             self.view.transform = CGAffineTransform.identity
         })
     }
 }
 
-// MARK: extension
+// MARK: - UIAdaptivePresentationControllerDelegate
 
 // Modalを閉じる時のイベントを取得する
 extension ViewController: UIAdaptivePresentationControllerDelegate {
@@ -222,15 +215,14 @@ extension ViewController: UIAdaptivePresentationControllerDelegate {
     }
 }
 
+// MARK: - UITextFieldDelegate
+
 extension ViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let maxLength: Int = 10
         let strings = textField.text! + string
-        if strings.count <= maxLength {
-            return true
-        } else {
-            return false
-        }
+        
+        return strings.count <= maxLength
     }
 
     func textFieldShouldReturn(_ text: UITextField) -> Bool {
