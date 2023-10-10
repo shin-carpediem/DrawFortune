@@ -24,6 +24,7 @@
 		F5463CB6283C3D3200C9E6BC /* TimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5463CB5283C3D3200C9E6BC /* TimerViewController.swift */; };
 		F5463CBA284B24BD00C9E6BC /* BrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5463CB9284B24BD00C9E6BC /* BrowserViewController.swift */; };
 		F5463CBF284B584200C9E6BC /* TopRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5463CBE284B584100C9E6BC /* TopRouter.swift */; };
+		F5B632DA2AD4515500B5929C /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B632D92AD4515500B5929C /* ARViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +63,7 @@
 		F5463CB5283C3D3200C9E6BC /* TimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewController.swift; sourceTree = "<group>"; };
 		F5463CB9284B24BD00C9E6BC /* BrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserViewController.swift; sourceTree = "<group>"; };
 		F5463CBE284B584100C9E6BC /* TopRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopRouter.swift; sourceTree = "<group>"; };
+		F5B632D92AD4515500B5929C /* ARViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,6 +162,7 @@
 				F5463CB5283C3D3200C9E6BC /* TimerViewController.swift */,
 				F5463CB9284B24BD00C9E6BC /* BrowserViewController.swift */,
 				0B6804FB29AD8DB50083C21B /* CompositonalLayoutsViewController.swift */,
+				F5B632D92AD4515500B5929C /* ARViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -319,6 +322,7 @@
 				F5463CB6283C3D3200C9E6BC /* TimerViewController.swift in Sources */,
 				F5463C77282FA0B800C9E6BC /* SceneDelegate.swift in Sources */,
 				F5463CB12830982300C9E6BC /* NameJudgeViewController.swift in Sources */,
+				F5B632DA2AD4515500B5929C /* ARViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

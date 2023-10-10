@@ -9,8 +9,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //    https://zenn.dev/kazumalab/articles/76ca59f82c189cf33d43
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
-//            window.rootViewController = ViewController.init()
-            window.rootViewController = CompositonalLayoutsViewController.init()
+//            window.rootViewController = ViewController()
+            window.rootViewController = ARViewController()
             self.window = window
             window.makeKeyAndVisible()
         }
